@@ -151,6 +151,7 @@ static jobject doScreenshot(JNIEnv* env, jobject clazz, jint width, jint height,
 	
     ScreenshotPixelRef* pixels = new ScreenshotPixelRef(NULL);
     if (pixels->update(width, height, minLayer, maxLayer, allLayers) == android::NO_ERROR) {
+        ALOGD("first method!");
         base = pixels->getPixels();
         w = pixels->getWidth();
         h = pixels->getHeight();
@@ -158,6 +159,7 @@ static jobject doScreenshot(JNIEnv* env, jobject clazz, jint width, jint height,
         f = pixels->getFormat();
 		size = pixels->getSize();
     } else {
+        ALOGD("second method!");
 	    delete pixels;
         const char* fbpath = "/dev/graphics/fb0";
         int fb = open(fbpath, O_RDONLY);
@@ -216,7 +218,13 @@ static jobject doScreenshot(JNIEnv* env, jobject clazz, jint width, jint height,
 	// if (mapbase != MAP_FAILED) {
 	//     munmap((void*)mapbase, mapsize);
 	// }
-    return GraphicsJNI::createBitmap(env, bitmap, false, NULL);
+    if (bitmap->pixelRef() == NULL) {
+        ALOGE("pixelRef is null!");
+        return 0;
+    }
+    //return GraphicsJNI::createBitmap(env, bitmap, false, NULL);
+    return GraphicsJNI::createBitmap(env, bitmap, GraphicsJNI::kBitmapCreateFlag_Premultiplied,
+        NULL, -1);
 }
 
 extern "C" JNIEXPORT jobject JNICALL Java_com_jones_screenz_ScreenZService_screenshot(
@@ -225,3 +233,4 @@ extern "C" JNIEXPORT jobject JNICALL Java_com_jones_screenz_ScreenZService_scree
     ALOGD("native_screenshot()");
     return doScreenshot(env, clazz, width, height, 0, 0, true);
 }
+

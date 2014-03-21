@@ -10,6 +10,8 @@
 #include "SkRegion.h"
 #include <android_runtime/AndroidRuntime.h>
 
+#include <cutils/log.h>
+
 void doThrowNPE(JNIEnv* env) {
     jniThrowNullPointerException(env, NULL);
 }
@@ -346,6 +348,40 @@ SkRegion* GraphicsJNI::getNativeRegion(JNIEnv* env, jobject region)
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 
+static jclass make_globalref(JNIEnv* env, const char classname[])
+{
+    jclass c = env->FindClass(classname);
+    SkASSERT(c);
+    return (jclass)env->NewGlobalRef(c);
+}
+
+/*
+jobject GraphicsJNI::createBitmap(JNIEnv* env, SkBitmap* bitmap, bool isMutable,
+                                  jbyteArray ninepatch, int density)
+*/
+
+/*
+jobject GraphicsJNI::createBitmap(JNIEnv* env, SkBitmap* bitmap, jbyteArray buffer,
+        int bitmapCreateFlags, jbyteArray ninepatch, jintArray layoutbounds, int density)
+{
+    SkASSERT(bitmap != NULL);
+    SkASSERT(NULL != bitmap->pixelRef());
+    
+    gBitmap_class = make_globalref(env, "android/graphics/Bitmap");
+    jobject obj = env->AllocObject(gBitmap_class);
+    if (obj) {
+      env->CallVoidMethod(obj, gBitmap_constructorMethodID,
+            static_cast<jint>(reinterpret_cast<uintptr_t>(bitmap)), NULL,
+            bitmap->width(), bitmap->height(), density, false, true, ninepatch,
+            NULL);
+        if (hasException(env)) {
+            obj = NULL;
+        }
+    }
+    return obj;
+}
+*/
+
 jobject GraphicsJNI::createBitmap(JNIEnv* env, SkBitmap* bitmap, jbyteArray buffer,
         int bitmapCreateFlags, jbyteArray ninepatch, jintArray layoutbounds, int density)
 {
@@ -353,6 +389,9 @@ jobject GraphicsJNI::createBitmap(JNIEnv* env, SkBitmap* bitmap, jbyteArray buff
     SkASSERT(bitmap->pixelRef());
     bool isMutable = bitmapCreateFlags & kBitmapCreateFlag_Mutable;
     bool isPremultiplied = bitmapCreateFlags & kBitmapCreateFlag_Premultiplied;
+
+    if (!gBitmap_class)
+        gBitmap_class = make_globalref(env, "android/graphics/Bitmap");
 
     jobject obj = env->NewObject(gBitmap_class, gBitmap_constructorMethodID,
             static_cast<jint>(reinterpret_cast<uintptr_t>(bitmap)), buffer,
@@ -596,13 +635,6 @@ JavaHeapBitmapRef::~JavaHeapBitmapRef() {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
-static jclass make_globalref(JNIEnv* env, const char classname[])
-{
-    jclass c = env->FindClass(classname);
-    SkASSERT(c);
-    return (jclass)env->NewGlobalRef(c);
-}
 
 static jfieldID getFieldIDCheck(JNIEnv* env, jclass clazz,
                                 const char fieldname[], const char type[])
