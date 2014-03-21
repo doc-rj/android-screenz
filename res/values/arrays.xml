@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="array_delay_pref">
+        <item>5 seconds</item>
+        <item>10 seconds</item>
+        <item>15 seconds</item>
+        <item>30 seconds</item>
+        <item>1 minute</item>
+        <item>2 minutes</item>
+    </string-array>
+    <string-array name="vals_delay_pref">
+        <item>5000</item>
+        <item>10000</item>
+        <item>15000</item>
+        <item>30000</item>
+        <item>60000</item>
+        <item>120000</item>
+    </string-array>
+    <string-array name="array_prox_dist_pref">
+        <item>5 centimeters</item>
+        <item>10 centimeters</item>
+        <item>20 centimeters</item>
+        <item>40 centimeters</item>
+    </string-array>
+    <string-array name="vals_prox_dist_pref">
+        <item>5</item>
+        <item>10</item>
+        <item>20</item>
+        <item>40</item>
+    </string-array>
+    <string-array name="array_img_size_pref">
+        <item>full size</item>
+        <item>half size</item>
+        <item>thumbnail size</item>
+    </string-array>
+    <string-array name="vals_img_size_pref">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+</resources>

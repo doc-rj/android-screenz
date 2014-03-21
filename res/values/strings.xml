@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ScreenZ</string>
+    <string name="take_screenshot">Take screenshot</string>
+    <string name="n_a">Screenshot interface not (yet) available.</string>
+    <string name="native_n_a">Native service not found.</string>
+    <string name="screenshot_error">Error while taking screenshot.</string>
+    <string name="screenshot_ok">Screenshot successful!</string>    
+    <string name="ttl_pref_cat_delayed_ss">Time delay screenshot</string>
+    <string name="ttl_take_ss_pref">Start screenshot timer now!</string>
+    <string name="smy_take_ss_pref">Click to take screenshot after time delay set below</string>
+    <string name="dlg_ttl_delay_pref">Screenshot delay</string>
+    <string name="ttl_delay_pref">Screenshot delay</string>
+    <string name="smy_delay_pref">Adjust the screenshot time delay</string>
+    <string name="ttl_pref_cat_btn_trigz">Button triggerZ</string>
+    <string name="ttl_search_trig_pref">Search button trigger</string>
+    <string name="smy_search_trig_pref">Take screenshot upon holding search button down for a couple of seconds (long press)</string>
+    <string name="ttl_camera_trig_pref">Camera button trigger</string>
+    <string name="smy_camera_trig_pref">Take screenshot upon pressing camera button</string>
+    <string name="ttl_pref_cat_magic_trigz">Magic triggerZ</string>
+    <string name="ttl_prox_trig_pref">Proximity sensor trigger</string>
+    <string name="smy_prox_trig_pref">Trigger a screenshot upon waving hand (or whatever) over proximity sensor</string>
+    <string name="ttl_prox_dist_pref">Proximity distance</string>
+    <string name="smy_prox_dist_pref">Adjust distance for proximity sensor trigger</string>
+    <string name="dlg_ttl_prox_dist_pref">Proximity distance</string>
+    <string name="ttl_shake_trig_pref">Shake it! trigger</string>
+    <string name="smy_shake_trig_pref">Shake device to trigger a screenshot... shake it up! (gently:)</string>
+    <string name="ttl_shake_sens_pref">Shake it! sensitivity</string>
+    <string name="smy_shake_sens_pref">Adjust sensitivity of shake it! trigger</string>
+    <string name="ttl_dlg_shake_sens_pref">Shake it! sensitivity</string>
+    <string name="ttl_pref_cat_imgs">Screenshot images</string>
+    <string name="ttl_img_crop_pref">Screenshot cropping</string>   
+    <string name="smy_img_crop_pref">Post-screenshot interactive image cropping</string>
+    <string name="ttl_img_dlg_pref">Screenshot dialog</string>
+    <string name="smy_img_dlg_pref">Post-screenshot option to save or discard; when disabled, all screenshots are saved</string>
+    <string name="ttl_img_size_pref">Image size</string>
+    <string name="smy_image_size_pref">Adjust size of saved screenshot image</string>
+    <string name="dlg_ttl_img_size_pref">Image size</string>
+</resources>

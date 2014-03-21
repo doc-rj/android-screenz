@@ -1,0 +1,21 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="@string/ttl_pref_cat_delayed_ss" android:key="pref_cat_delayed_ss">
+        <Preference android:persistent="false" android:title="@string/ttl_take_ss_pref" android:summary="@string/smy_take_ss_pref" android:key="take_ss_pref"></Preference>
+    <ListPreference android:defaultValue="10000" android:persistent="true" android:entryValues="@array/vals_delay_pref" android:dialogTitle="@string/dlg_ttl_delay_pref" android:title="@string/ttl_delay_pref" android:key="delay_pref" android:summary="@string/smy_delay_pref" android:entries="@array/array_delay_pref"/></PreferenceCategory><PreferenceCategory android:title="@string/ttl_pref_cat_btn_trigz" android:key="pref_cat_btn_trigz">
+        <CheckBoxPreference android:key="search_trig_pref" android:title="@string/ttl_search_trig_pref" android:summary="@string/smy_search_trig_pref" android:persistent="true" android:defaultValue="true"></CheckBoxPreference>
+        <CheckBoxPreference android:key="camera_trig_pref" android:title="@string/ttl_camera_trig_pref" android:summary="@string/smy_camera_trig_pref" android:persistent="true" android:defaultValue="false"></CheckBoxPreference>
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/ttl_pref_cat_magic_trigz" android:key="pref_cat_magic_trigz">
+        
+    <CheckBoxPreference android:title="@string/ttl_prox_trig_pref" android:key="prox_trig_pref" android:summary="@string/smy_prox_trig_pref" android:persistent="true" android:defaultValue="false"/><ListPreference android:key="prox_dist_pref" android:title="@string/ttl_prox_dist_pref" android:summary="@string/smy_prox_dist_pref" android:dialogTitle="@string/dlg_ttl_prox_dist_pref" android:entryValues="@array/vals_prox_dist_pref" android:entries="@array/array_prox_dist_pref" android:dependency="prox_trig_pref" android:persistent="true" android:defaultValue="5"></ListPreference>
+    <CheckBoxPreference android:title="@string/ttl_shake_trig_pref" android:key="shake_trig_pref" android:summary="@string/smy_shake_trig_pref" android:persistent="true" android:defaultValue="false"></CheckBoxPreference>
+    
+    <SeekBarPreference android:dependency="shake_trig_pref" android:summary="@string/smy_shake_sens_pref" android:key="shake_sens_pref" android:title="@string/ttl_shake_sens_pref" android:dialogTitle="@string/ttl_dlg_shake_sens_pref" android:persistent="true" android:defaultValue="0" android:negativeButtonText="-" android:positiveButtonText="+"></SeekBarPreference>
+</PreferenceCategory>
+    <PreferenceCategory
+            android:key="pref_cat_imgs" android:title="@string/ttl_pref_cat_imgs">
+        <CheckBoxPreference android:title="@string/ttl_img_crop_pref" android:key="img_crop_pref" android:summary="@string/smy_img_crop_pref" android:persistent="true" android:defaultValue="true"></CheckBoxPreference>
+        <CheckBoxPreference android:title="@string/ttl_img_dlg_pref" android:key="img_dlg_pref" android:summary="@string/smy_img_dlg_pref" android:persistent="true" android:defaultValue="true"></CheckBoxPreference><ListPreference android:key="img_size_pref" android:title="@string/ttl_img_size_pref" android:entryValues="@array/vals_img_size_pref" android:dialogTitle="@string/dlg_ttl_img_size_pref" android:entries="@array/array_img_size_pref" android:summary="@string/smy_image_size_pref" android:persistent="true" android:defaultValue="0"></ListPreference>
+
+    </PreferenceCategory>
+</PreferenceScreen>
