@@ -14,7 +14,7 @@ LOCAL_C_INCLUDES += \
 	external/skia/include/core \
 	external/skia/include/images
 
-#LOCAL_LDLIBS    := -lcutils -lutils -lbinder -llog -lui -lgui -lskia
+#LOCAL_LDLIBS    := -lcutils -lutils -lbinder -llog -lui -lgui -lskia -lnativehelper
 LOCAL_SHARED_LIBRARIES := libcutils libutils libbinder liblog libui libgui libskia libnativehelper
 
 include $(BUILD_SHARED_LIBRARY)

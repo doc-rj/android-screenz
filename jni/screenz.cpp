@@ -1,12 +1,20 @@
 
 #define LOG_TAG "screenz"
 
+#include <errno.h>
+#include <unistd.h>
 #include <stdio.h>
+#include <fcntl.h>
+
+#include <linux/fb.h>
+#include <sys/ioctl.h>
+#include <sys/mman.h>
 
 #include <jni.h>
 #include <GraphicsJNI.h>
 #include <binder/IMemory.h>
 #include <binder/IBinder.h>
+//#include <binder/ProcessState.h>
 
 #include <gui/SurfaceComposerClient.h>
 #include <gui/ISurfaceComposer.h>
@@ -19,6 +27,7 @@
 #include <SkPixelRef.h>
 
 #include <utils/misc.h>
+#include <utils/Errors.h>
 #include <cutils/log.h>
 
 //using namespace android;
@@ -31,6 +40,29 @@ static inline SkBitmap::Config convertPixelFormat(android::PixelFormat format)
         default:
             return SkBitmap::kARGB_8888_Config;
     }
+}
+
+static android::status_t vinfoToPixelFormat(const fb_var_screeninfo& vinfo,
+        uint32_t* bytespp, uint32_t* f)
+{
+    switch (vinfo.bits_per_pixel) {
+        case 16:
+            *f = android::PIXEL_FORMAT_RGB_565;
+            *bytespp = 2;
+            break;
+        case 24:
+            *f = android::PIXEL_FORMAT_RGB_888;
+            *bytespp = 3;
+            break;
+        case 32:
+            // TODO: do better decoding of vinfo here
+            *f = android::PIXEL_FORMAT_RGBX_8888;
+            *bytespp = 4;
+            break;
+        default:
+            return android::BAD_VALUE;
+    }
+    return android::NO_ERROR;
 }
 
 class ScreenshotPixelRef : public SkPixelRef {
@@ -58,6 +90,10 @@ public:
         }
 
         return android::NO_ERROR;
+    }
+
+    void const* getPixels() const {
+        return mScreenshot.getPixels();
     }
 
     uint32_t getWidth() const {
@@ -115,6 +151,7 @@ static jobject doScreenshot(JNIEnv* env, jobject clazz, jint width, jint height,
 	
     ScreenshotPixelRef* pixels = new ScreenshotPixelRef(NULL);
     if (pixels->update(width, height, minLayer, maxLayer, allLayers) == android::NO_ERROR) {
+        base = pixels->getPixels();
         w = pixels->getWidth();
         h = pixels->getHeight();
         s = pixels->getStride();
@@ -128,7 +165,7 @@ static jobject doScreenshot(JNIEnv* env, jobject clazz, jint width, jint height,
             struct fb_var_screeninfo vinfo;
             if (ioctl(fb, FBIOGET_VSCREENINFO, &vinfo) == 0) {
                 uint32_t bytespp;
-                if (vinfoToPixelFormat(vinfo, &bytespp, &f) == NO_ERROR) {
+                if (vinfoToPixelFormat(vinfo, &bytespp, &f) == android::NO_ERROR) {
                     size_t offset = (vinfo.xoffset + vinfo.yoffset*vinfo.xres) * bytespp;
                     w = vinfo.xres;
                     h = vinfo.yres;
@@ -138,12 +175,23 @@ static jobject doScreenshot(JNIEnv* env, jobject clazz, jint width, jint height,
                     mapbase = mmap(0, mapsize, PROT_READ, MAP_PRIVATE, fb, 0);
                     if (mapbase != MAP_FAILED) {
 					    base = (void const *)((char const *)mapbase + offset);
+                    } else {
+                        ALOGE("mmap failed!");
                     }
+                } else {
+                    ALOGE("vinfo to pixel format failed!");
                 }
             }
             close(fb);
-        }		
+        } else {
+            ALOGE("failed to open frame buffer!");
+        }
 	}
+
+    if (!base) {
+        ALOGE("base 0, returning null!");
+        return 0;
+    }
 
     ALOGD("creating bitmap!");
     SkBitmap* bitmap = new SkBitmap();
